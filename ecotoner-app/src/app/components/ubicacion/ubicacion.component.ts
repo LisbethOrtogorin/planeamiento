@@ -10,8 +10,10 @@ interface PerfilCompetitivo {
     descripcion: string;
     valor: number;
 }
+
 // tslint:disable-next-line:no-empty-interface
-interface Peea extends PerfilCompetitivo {}
+interface Peea extends PerfilCompetitivo {
+}
 
 @Component({
     selector: 'app-ubicacion',
@@ -197,7 +199,37 @@ export class UbicacionComponent implements OnInit {
             valor: -5
         }
     ];
-    totalsPeEa: number[] = [0, 0, 0, 0]
+    totalsPeEa: number[] = [0, 0, 0, 0];
+
+    oportunidadesMpec = this.oportunidadesPeEa.splice(0);
+    amenazasMpec = this.amenazasPeEa.splice(0);
+    fortalezasMpec = this.fortalezasPeEa.splice(0);
+    debilidadesMpec = this.debilidadesPeEa.splice(0);
+    penetracionMercado: number[][] = [
+        [3, 3, 4, 3, 3],
+        [1, 2, 2, 1, 1],
+        [4, 4, 3, 4, 3],
+        [1, 1, 1, 2, 1]
+    ];
+    desarrolloMercado: number[][] = [
+        [4, 3, 3, 4, 3],
+        [4, 4, 2, 1, 1],
+        [4, 3, 3, 4, 3],
+        [4, 4, 2, 1, 1]
+    ];
+    desarrolloProductos: number[][] = [
+        [4, 0, 0, 4, 0],
+        [0, 2, 4, 4, 4],
+        [4, 4, 2, 4, 0],
+        [4, 2, 4, 0, 3]
+    ];
+    totalsMpec: number[][] = [
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+    ];
+
     constructor() {
     }
 
@@ -212,11 +244,41 @@ export class UbicacionComponent implements OnInit {
         this.totalsEmpresas[1] = this.obtainPCompetitivoPonderation(this.edSuministrosCal, this.perfil);
         this.totalsEmpresas[2] = this.obtainPCompetitivoPonderation(this.ccAmericaCal, this.perfil);
 
-        this.totalsPeEa[0] = this.obtainCalificationPeEa(this.fortalezasPeEa)
-        this.totalsPeEa[1] = this.obtainCalificationPeEa(this.oportunidadesPeEa)
-        this.totalsPeEa[2] = this.obtainCalificationPeEa(this.debilidadesPeEa)
-        this.totalsPeEa[3] = this.obtainCalificationPeEa(this.amenazasPeEa)
+        this.totalsPeEa[0] = this.obtainCalificationPeEa(this.fortalezasPeEa);
+        this.totalsPeEa[1] = this.obtainCalificationPeEa(this.oportunidadesPeEa);
+        this.totalsPeEa[2] = this.obtainCalificationPeEa(this.debilidadesPeEa);
+        this.totalsPeEa[3] = this.obtainCalificationPeEa(this.amenazasPeEa);
+        const oportunidadesMpecValue: number[] = [0.1, 0.1, 0.2, 0.05, 0.05];
+        const amenazasMpecValue: number[] = [0.10, 0.15, 0.15, 0.05, 0.05];
+        const fortalezasMpecValue: number[] = [0.2, 0.1, 0.1, 0.05, 0.05];
+        const debilidadesMpecValue: number[] = [0.1, 0.1, 0.05, 0.2, 0.05];
+        this.oportunidadesMpec.forEach((value, index) => {
+            this.oportunidadesMpec[index].valor = oportunidadesMpecValue[index];
+        });
+        this.amenazasMpec.forEach((value, index) => {
+            this.amenazasMpec[index].valor = amenazasMpecValue[index];
+        });
+        this.fortalezasMpec.forEach((value, index) => {
+            this.fortalezasMpec[index].valor = fortalezasMpecValue[index];
+        });
+        this.debilidadesMpec.forEach((value, index) => {
+            this.debilidadesMpec[index].valor = debilidadesMpecValue[index];
+        });
+        this.totalsMpec[0][0] = this.obtainPCompetitivoPonderation(this.penetracionMercado[0], this.oportunidadesMpec);
+        this.totalsMpec[0][1] = this.obtainPCompetitivoPonderation(this.desarrolloMercado[0], this.oportunidadesMpec);
+        this.totalsMpec[0][2] = this.obtainPCompetitivoPonderation(this.desarrolloProductos[0], this.oportunidadesMpec);
 
+        this.totalsMpec[1][0] = this.obtainPCompetitivoPonderation(this.penetracionMercado[1], this.amenazasMpec);
+        this.totalsMpec[1][1] = this.obtainPCompetitivoPonderation(this.desarrolloMercado[1], this.amenazasMpec);
+        this.totalsMpec[1][2] = this.obtainPCompetitivoPonderation(this.desarrolloProductos[1], this.amenazasMpec);
+
+        this.totalsMpec[2][0] = this.obtainPCompetitivoPonderation(this.penetracionMercado[2], this.fortalezasMpec);
+        this.totalsMpec[2][2] = this.obtainPCompetitivoPonderation(this.desarrolloProductos[2], this.fortalezasMpec);
+        this.totalsMpec[2][1] = this.obtainPCompetitivoPonderation(this.desarrolloMercado[2], this.fortalezasMpec);
+
+        this.totalsMpec[3][0] = this.obtainPCompetitivoPonderation(this.penetracionMercado[3], this.debilidadesMpec);
+        this.totalsMpec[3][1] = this.obtainPCompetitivoPonderation(this.desarrolloMercado[3], this.debilidadesMpec);
+        this.totalsMpec[3][2] = this.obtainPCompetitivoPonderation(this.desarrolloProductos[3], this.debilidadesMpec);
     }
 
     obtainCalificationPeEa(foda: Peea[]): number {
@@ -230,7 +292,7 @@ export class UbicacionComponent implements OnInit {
     obtainPCompetitivoPonderation(empresa: number[], ponderation: PerfilCompetitivo[]): number {
         let acum = 0;
         ponderation.forEach((value, index) => {
-            acum += (empresa[index] * value.valor );
+            acum += (empresa[index] * value.valor);
         });
         return acum;
     }
