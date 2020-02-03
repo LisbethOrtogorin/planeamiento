@@ -1,15 +1,17 @@
 import {Component, OnInit} from '@angular/core';
 
 interface Ef {
-    descripcion: string
-    valor: number
-    clasificacion: number
+    descripcion: string;
+    valor: number;
+    clasificacion: number;
 }
 
 interface PerfilCompetitivo {
-    descripcion: string
-    valor: number
+    descripcion: string;
+    valor: number;
 }
+// tslint:disable-next-line:no-empty-interface
+interface Peea extends PerfilCompetitivo {}
 
 @Component({
     selector: 'app-ubicacion',
@@ -47,7 +49,7 @@ export class UbicacionComponent implements OnInit {
     ];
     debilidades: Ef[] = [
         {
-            descripcion: 'LFalta de equipos automatizados, en la actualidad la mayor parte del proceso se realiza de forma manual.',
+            descripcion: 'La falta de equipos automatizados, en la actualidad la mayor parte del proceso se realiza de forma manual.',
             valor: 0.1,
             clasificacion: 1
         },
@@ -72,8 +74,8 @@ export class UbicacionComponent implements OnInit {
             clasificacion: 1
         }
     ];
-    sumaCalificacion: number = 0;
-    sumaPonderada: number = 0;
+    sumaCalificacion = 0;
+    sumaPonderada = 0;
 
     perfil: PerfilCompetitivo[] = [
         {
@@ -101,11 +103,101 @@ export class UbicacionComponent implements OnInit {
             valor: 0.2
         }
     ];
-    ecotonnerCal: number[] = [4, 4, 2, 2, 3, 2]
-    edSuministrosCal: number[] = [2, 3, 4, 2, 2, 4]
-    ccAmericaCal: number[] = [3, 2, 3, 2, 1, 1]
-    totalsEmpresas: number[] = [0, 0, 0]
+    ecotonnerCal: number[] = [4, 4, 2, 2, 3, 2];
+    edSuministrosCal: number[] = [2, 3, 4, 2, 2, 4];
+    ccAmericaCal: number[] = [3, 2, 3, 2, 1, 1];
+    totalsEmpresas: number[] = [0, 0, 0];
 
+    fortalezasPeEa: Peea[] = [
+        {
+            descripcion: 'La empresa cuenta con personal técnico calificado.',
+            valor: 6,
+        },
+        {
+            descripcion: 'Bajo costo del producto y servicios ofrecidos.',
+            valor: 5,
+        },
+        {
+            descripcion: 'Se cuenta con local propio que esta adecuado a las necesidades del producto/servicio brindado.',
+            valor: 3,
+        },
+        {
+            descripcion: 'El producto es eco-amigable.',
+            valor: 4,
+        },
+        {
+            descripcion: 'Distribución a delivery con canales propios.',
+            valor: 3,
+        }
+    ];
+    oportunidadesPeEa: Peea[] = [
+        {
+            descripcion: 'Ingreso en el Mercado como producto alternativo y eco- amigable.',
+            valor: 5,
+        },
+        {
+            descripcion: 'Eventos tecnológicos o de innovación realizados por alguna entidad pública' +
+                ' o privada donde se pueda mostrar nuestro producto.',
+            valor: 5,
+        },
+        {
+            descripcion: 'Competencia escasa, en el área funcional de la empresa.',
+            valor: 6,
+        },
+        {
+            descripcion: 'Alto consumo de impresión por parte de las entidades públicas.',
+            valor: 3,
+        },
+        {
+            descripcion: 'Existencia de los e-comerce facilitando la venta por internet.',
+            valor: 4,
+        }
+    ];
+    debilidadesPeEa: Peea[] = [
+        {
+            descripcion: 'La falta de equipos automatizados, en la actualidad la mayor parte del proceso se realiza de forma manual.',
+            valor: -2
+        },
+        {
+            descripcion: 'Falta de personal calificado en la ciudad del Cusco.',
+            valor: -1
+        },
+        {
+            descripcion: 'Deficiencias en la publicidad.',
+            valor: -3
+        },
+        {
+            descripcion: 'Demora en los tiempos de entrega.',
+            valor: -3
+        },
+        {
+            descripcion: 'Deficiencia en la presentación del producto final',
+            valor: -2
+        }
+    ];
+    amenazasPeEa: Peea[] = [
+        {
+            descripcion: 'Surgimiento de la política de ahorro del papel y buenas prácticas en pro del cuidado del planeta.',
+            valor: -5
+        },
+        {
+            descripcion: 'Poco conocimiento de la remanufactura de tóner y mitos sobre este servicio.',
+            valor: -3
+        },
+        {
+            descripcion: 'Dependencia de proveedor de materia prima e insumos, ya que los insumos son importados desde E.E.U.U.',
+            valor: -2
+        },
+        {
+            descripcion: 'Ingreso de productos alternativos nuevos de procedencia china a muy bajo costo.',
+            valor: -2
+        },
+        {
+            descripcion: 'Disminución de costos de venta de los productos originales.',
+            valor: -5
+        }
+    ];
+    totalsPeEa: number[] = [0, 0, 0, 0]
     constructor() {
     }
 
@@ -116,19 +208,31 @@ export class UbicacionComponent implements OnInit {
         this.sumaPonderada += this.obtainPonderation(this.fortalezas);
         this.sumaPonderada += this.obtainPonderation(this.debilidades);
 
-        this.totalsEmpresas[0] = this.obtainPCompetitivoPonderation(this.ecotonnerCal, this.perfil)
-        this.totalsEmpresas[1] = this.obtainPCompetitivoPonderation(this.edSuministrosCal, this.perfil)
-        this.totalsEmpresas[2] = this.obtainPCompetitivoPonderation(this.ccAmericaCal, this.perfil)
+        this.totalsEmpresas[0] = this.obtainPCompetitivoPonderation(this.ecotonnerCal, this.perfil);
+        this.totalsEmpresas[1] = this.obtainPCompetitivoPonderation(this.edSuministrosCal, this.perfil);
+        this.totalsEmpresas[2] = this.obtainPCompetitivoPonderation(this.ccAmericaCal, this.perfil);
 
+        this.totalsPeEa[0] = this.obtainCalificationPeEa(this.fortalezasPeEa)
+        this.totalsPeEa[1] = this.obtainCalificationPeEa(this.oportunidadesPeEa)
+        this.totalsPeEa[2] = this.obtainCalificationPeEa(this.debilidadesPeEa)
+        this.totalsPeEa[3] = this.obtainCalificationPeEa(this.amenazasPeEa)
 
     }
 
-    obtainPCompetitivoPonderation(empresa: number[], ponderation: PerfilCompetitivo[]): number{
-        let acum = 0
+    obtainCalificationPeEa(foda: Peea[]): number {
+        let acum = 0;
+        foda.forEach(value => {
+            acum += value.valor;
+        });
+        return acum;
+    }
+
+    obtainPCompetitivoPonderation(empresa: number[], ponderation: PerfilCompetitivo[]): number {
+        let acum = 0;
         ponderation.forEach((value, index) => {
-            acum += (empresa[index] * value.valor )
-        })
-        return acum
+            acum += (empresa[index] * value.valor );
+        });
+        return acum;
     }
 
     obtainCalification(efi: Ef[]): number {

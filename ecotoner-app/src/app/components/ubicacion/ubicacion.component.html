@@ -197,3 +197,97 @@
     </table>
 
 </div>
+
+<div class="container">
+    <table class="table table-striped table-dark">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">FORTALEZAS</th>
+            <th scope="col">CALIFICACIÓN</th>
+            <th scope="col">VALOR PONDERADO</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let fort of fortalezasPeEa; let ind = index">
+            <th scope="row">F{{ind + 1}}</th>
+            <td>{{fort.descripcion}}</td>
+            <td>{{fort.valor}}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <th scope="row"></th>
+            <td>Total Fortalezas</td>
+            <td>{{totalsPeEa[0]}}</td>
+            <td>4.2</td>
+            <td></td>
+        </tr>
+        <tr>
+            <th scope="row"></th>
+            <td>OPORTUNIDADES</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr *ngFor="let opor of oportunidadesPeEa; let ind = index">
+            <th scope="row">O{{ind + 1}}</th>
+            <td>{{opor.descripcion}}</td>
+            <td>{{opor.valor }}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <th scope="row"></th>
+            <td>Total Oportunidades</td>
+            <td>{{totalsPeEa[1]}}</td>
+            <td>4.6</td>
+            <td></td>
+        </tr>
+        <tr>
+            <th scope="row"></th>
+            <td>DEBILIDADES</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr *ngFor="let deb of debilidadesPeEa; let ind = index">
+            <th scope="row">D{{ind + 1}}</th>
+            <td>{{deb.descripcion}}</td>
+            <td>{{deb.valor }}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <th scope="row"></th>
+            <td>Total Debilidades</td>
+            <td>{{totalsPeEa[2]}}</td>
+            <td>-2.2</td>
+            <td>F+D: 2</td>
+        </tr>
+        <tr>
+            <th scope="row"></th>
+            <td>AMENAZAS</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr *ngFor="let ame of amenazasPeEa; let ind = index">
+            <th scope="row">A{{ind + 1}}</th>
+            <td>{{ame.descripcion}}</td>
+            <td>{{ame.valor }}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <th scope="row"></th>
+            <td>Total Amenzas</td>
+            <td>{{totalsPeEa[3]}}</td>
+            <td>-3.4</td>
+            <td>O+A: 1.2</td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
